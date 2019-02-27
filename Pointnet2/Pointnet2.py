@@ -129,10 +129,11 @@ class PointNetSetAbstraction(nn.Module):
         self.mlp_bns = nn.ModuleList()
         last_channel = in_channel
         for out_channel in mlp:
-            self.mlp_convs.append(nn.Conv2d(last_channel, out_channel, 1))
+            self.mlp_convs.append(nn.Conv2d(last_channel, out_channel, 1,1))
             self.mlp_bns.append(nn.BatchNorm2d(out_channel))
             last_channel = out_channel
         self.group_all = group_all
+
 
     def forward(self, xyz, points):
         """
@@ -152,7 +153,7 @@ class PointNetSetAbstraction(nn.Module):
         else:
             new_xyz, new_points = sample_and_group(self.npoint, self.radius, self.nsample, xyz, points)
 
-        new_points = new_points.permute(0, 3, 2, 1)
+        new_points = new_points.permute(0, 3, 2, 1).contiguous()
         for i, conv in enumerate(self.mlp_convs):
             bn = self.mlp_bns[i]
             new_points = F.relu(bn(conv(new_points)))
@@ -229,6 +230,7 @@ class PointNet2SemSeg(nn.Module):
         self.conv2 = nn.Conv1d(128, num_classes, 1)
 
     def forward(self, xyz):
+        xyz = xyz.permute(0, 2, 1)
         l1_xyz, l1_points = self.sa1(xyz, None)
         l2_xyz, l2_points = self.sa2(l1_xyz, l1_points)
         l3_xyz, l3_points = self.sa3(l2_xyz, l2_points)
@@ -241,7 +243,7 @@ class PointNet2SemSeg(nn.Module):
 
         x = self.drop1(F.relu(self.bn1(self.conv1(l0_points))))
         x = self.conv2(x)
-        x = F.log_softmax(x, dim=1)
+        # x = F.log_softmax(x, dim=1)
         return x
 
 if __name__ == '__main__':
