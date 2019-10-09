@@ -22,3 +22,7 @@ There are two versions of the cuda extensions for pointnet and pointsift. The fi
 
 Quick implementation of 3D-BoNet (https://arxiv.org/pdf/1906.01140.pdf) https://gist.github.com/lelouedec/5a7ba5547df5cef71b50ab306199623f using pytorch. All in one file, need to compile C++ pointnet extension. Code not converging for bounding boxes regressions
 
+## SPGN
+
+Implementation of SGPN (https://arxiv.org/pdf/1711.08588.pdf) based on Pointnet implementation. 
+
