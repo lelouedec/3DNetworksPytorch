@@ -1,6 +1,8 @@
 # 3DNetworksPytorch
 
+This repository is meant as way to learn by implementating them, different 3D deep learning architectures for pointclouds. I haven't tested them on benchmark datasets for the papers, only on some toy examples. If You spot any mistake, I am open to pull requests and any colaboration on the topic.
 
+(I haven't cleaned the code completly so it might seem a bit messy at first sight)
 
 ## PointSift
 An implementation of PointSift using Pytorch (https://arxiv.org/pdf/1807.00652.pdf) lies in the PoinSift folder.
