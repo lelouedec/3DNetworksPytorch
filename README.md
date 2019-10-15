@@ -15,11 +15,9 @@ An implementation of PointCNN using Pytorch (https://arxiv.org/pdf/1801.07791.pd
 An implementation of PointNet++ using Pytorch (https://arxiv.org/pdf/1706.02413.pdf) lies in the PointNet++ folder.
 It uses the same algorithms on GPU as PointSift as Pointsift uses Pointnet++ modules.
 
-All the GPU code work only with Pytorch 0.4.1, as now they do not support C tensor API anymore. I am working on translating them into C++, to move everything to pytorch 1.0
 
 ## Cuda Extension
-There are two versions of the cuda extensions for pointnet and pointsift. The first one is in C_utils and was implemented using the old C api for torch. As it is now deprecated in newer version of pytorch and they recommend using the C++ extension api, I did an attempt in cppattempt folder. However even if it should be a direct translation of the bridge into C++ I am not getting the same performances and outputs. I am still working on it, any help is welcome.
-
+There are two versions of the cuda extensions for pointnet and pointsift. The first one is in C_utils and was implemented using the old C api for torch. As it is now deprecated in newer version of pytorch and they recommend using the C++ extension api, I did an attempt in cppattempt folder. 
 ## 3D-BoNet 
 
 Quick implementation of 3D-BoNet (https://arxiv.org/pdf/1906.01140.pdf) https://gist.github.com/lelouedec/5a7ba5547df5cef71b50ab306199623f using pytorch. All in one file, need to compile C++ pointnet extension. Code not converging for bounding boxes regressions
