@@ -1,8 +1,13 @@
 # 3DNetworksPytorch
 
+
+
+
 This repository is meant as way to learn by implementating them, different 3D deep learning architectures for pointclouds. I haven't tested them on benchmark datasets for the papers, only on some toy examples. If You spot any mistake, I am open to pull requests and any colaboration on the topic.
 
 (I haven't cleaned the code completly so it might seem a bit messy at first sight)
+Most of the networks are using the cuda code in cppattempt. Please go in there and install the extension (python setup.py install), so that they can import it.
+The only things required should be pytorch 1.0+ and the corresponding cudatoolkit, everything configured correctly obviously. See pytorch explanations for how to compile C++ extensions.
 
 ## PointSift
 An implementation of PointSift using Pytorch (https://arxiv.org/pdf/1807.00652.pdf) lies in the PoinSift folder.
@@ -17,12 +22,11 @@ It uses the same algorithms on GPU as PointSift as Pointsift uses Pointnet++ mod
 
 
 ## Cuda Extension
-There are two versions of the cuda extensions for pointnet and pointsift. The first one is in C_utils and was implemented using the old C api for torch. As it is now deprecated in newer version of pytorch and they recommend using the C++ extension api, I did an attempt in cppattempt folder. 
-## 3D-BoNet 
+There are two versions of the cuda extensions for pointnet and pointsift. The first one is in C_utils and was implemented using the old C api for torch. As it is now deprecated in newer version of pytorch and they recommend using the C++ extension api, I did an attempt in cppattempt folder.
+## 3D-BoNet
 
 Quick implementation of 3D-BoNet (https://arxiv.org/pdf/1906.01140.pdf) https://gist.github.com/lelouedec/5a7ba5547df5cef71b50ab306199623f using pytorch. All in one file, need to compile C++ pointnet extension. Code not converging for bounding boxes regressions
 
 ## SPGN
 
-Implementation of SGPN (https://arxiv.org/pdf/1711.08588.pdf) based on Pointnet implementation. 
-
+Implementation of SGPN (https://arxiv.org/pdf/1711.08588.pdf) based on Pointnet implementation.
