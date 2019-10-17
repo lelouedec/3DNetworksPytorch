@@ -1,3 +1,5 @@
+import sys
+sys.path.insert(0,'..')
 import torch
 import torch.nn as nn
 import torch.nn.init as init
@@ -5,7 +7,7 @@ import torch.nn.functional as F
 import numpy as np
 from time import time
 import point
-from net_utils import *
+from Utils.net_utils import *
 from SGPN_utils import *
 
 

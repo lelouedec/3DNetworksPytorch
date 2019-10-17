@@ -1,6 +1,5 @@
 import numpy as np
 from scipy import stats
-import open3d as opend
 #ths,ths_,cnt = Get_Ths(pts_corr_val, target['semseg'].cpu().numpy()[0], target['ptsgroup'].cpu().numpy()[0], ths, ths_, cnt)
 def Get_Ths(pts_corr, seg, ins, ths, ths_, cnt):
     seg = np.transpose(seg,(1,0))

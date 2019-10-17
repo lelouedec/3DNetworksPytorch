@@ -1,17 +1,15 @@
 import sys
 sys.path.insert(0,'..')
 import math
+import open3d
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-
+import point
 import numpy as np
-from C_utils import libsift
 import time
-import open3d
-import DFileParser
 import torch.optim as optim
-
+from Utils.net_utils import *
 
 
 def conv_bn(inp, oup, kernel, stride=1, activation='relu'):
@@ -44,7 +42,14 @@ class PointNet_SA_module_basic(nn.Module):
     def __init__(self):
         super(PointNet_SA_module_basic, self).__init__()
 
-    def index_points(self, points, idx):
+    def index_points(self,points, idx):
+        """
+        Input:
+            points: input points data, [B, N, C]
+            idx: sample index data, [B, D1, D2, ..., Dn]
+        Return:
+            new_points:, indexed points data, [B, D1, D2, ..., Dn, C]
+        """
         device = points.device
         B = points.shape[0]
         view_shape = list(idx.shape)
@@ -53,8 +58,7 @@ class PointNet_SA_module_basic(nn.Module):
         repeat_shape[0] = 1
         batch_indices = torch.arange(B, dtype=torch.long).view(view_shape).repeat(repeat_shape)
         new_points = points[batch_indices, idx, :]
-        # new_points = torch.cat([points.index_select(1,idx[b]) for b in range(0,idx.shape[0])], dim=0)
-        return  new_points
+        return new_points
 
     def square_distance(self, src, dst):
         """
@@ -78,14 +82,14 @@ class PointNet_SA_module_basic(nn.Module):
         m = idx.shape[1]
         nsample = idx.shape[2]
         out = torch.zeros((xyz.shape[0],xyz.shape[1], idx.shape[2],c)).cuda()
-        libsift.group_points(b,n,c,n,nsample,xyz,idx.int(),out)
+        point.group_points(b,n,c,n,nsample,xyz,idx.int(),out)
         return out
 
     def farthest_point_sample_gpu(self, xyz, npoint):
         b, n ,c = xyz.shape
         centroid = torch.zeros((xyz.shape[0],npoint), dtype=torch.int32).cuda()
         temp = torch.zeros((32,n)).cuda()
-        libsift.farthestPoint(b,n, npoint, xyz , temp   ,centroid)
+        point.farthestPoint(b,n, npoint, xyz , temp   ,centroid)
         return centroid.long()
 
     def ball_query(self, radius, nsample, xyz, new_xyz):
@@ -93,7 +97,7 @@ class PointNet_SA_module_basic(nn.Module):
         m =  new_xyz.shape[1]
         group_idx = torch.zeros((new_xyz.shape[0],new_xyz.shape[1], nsample), dtype=torch.int32).cuda()
         pts_cnt = torch.zeros((xyz.shape[0],xyz.shape[1]), dtype=torch.int32).cuda()
-        libsift.ball_query (b, n, m, radius, nsample, xyz, new_xyz, group_idx ,pts_cnt)
+        point.ball_query (b, n, m, radius, nsample, xyz, new_xyz, group_idx ,pts_cnt)
 
         return group_idx.long()
 
@@ -116,7 +120,7 @@ class PointNet_SA_module_basic(nn.Module):
         Np = npoint
         assert isinstance(Np, int)
 
-        new_xyz = self.idx_pts(xyz, self.farthest_point_sample_gpu(xyz, npoint)) # [B,n,3] and [B,np] → [B,np,3]
+        new_xyz = self.index_points(xyz, self.farthest_point_sample_gpu(xyz, npoint)) # [B,n,3] and [B,np] → [B,np,3]
         idx = self.ball_query(radius, nsample, xyz, new_xyz)
         grouped_xyz = self.index_points(xyz, idx)# [B,n,3] and [B,n,M] → [B,n,M,3]
         grouped_xyz -= new_xyz.view(B, Np, 1, C)  # the points of each group will be normalized with their centroid
@@ -199,12 +203,12 @@ class PointSIFT_module_basic(nn.Module):
         m = idx.shape[1]
         nsample = idx.shape[2]
         out = torch.zeros((xyz.shape[0],xyz.shape[1], 8,c)).cuda()
-        libsift.group_points(b,n,c,m,nsample,xyz,idx.int(),out)
+        point.group_points(b,n,c,m,nsample,xyz,idx.int(),out)
         return out
 
     def pointsift_select(self, radius, xyz):
         y = torch.zeros((xyz.shape[0],xyz.shape[1], 8), dtype=torch.int32).cuda()
-        libsift.select_cube(xyz,y,xyz.shape[0],xyz.shape[1],radius)
+        point.select_cube(xyz,y,xyz.shape[0],xyz.shape[1],radius)
         return y.long()
 
     def pointsift_group(self, radius, xyz, points, use_xyz=True):
@@ -341,13 +345,13 @@ class Pointnet_fp_module(nn.Module):
         m = xyz2.shape[1]
         dist = torch.zeros((xyz1.shape[0],xyz1.shape[1], 3)).cpu()
         idx = torch.zeros((xyz1.shape[0],xyz1.shape[1], 3), dtype=torch.int32).cpu()
-        libsift.interpolate(b,n, m, xyz1.cpu(), xyz2.cpu(), dist,idx);
+        point.interpolate(b,n, m, xyz1.cpu(), xyz2.cpu(), dist,idx);
         dist     = self.tanh(dist)
         norm     = torch.sum((1.0/dist),dim = 2, keepdim=True)
         norm     = norm.repeat([1,1,3])
         weight   = (1.0/dist) / norm
         interpolated_points = torch.zeros((b,n, points1.shape[2])).cpu()
-        libsift.three_interpolate(b, m, c, n, points2.cpu(), idx.cpu(), weight.cpu(), interpolated_points)
+        point.three_interpolate(b, m, c, n, points2.cpu(), idx.cpu(), weight.cpu(), interpolated_points)
         xyz1 = xyz1.cuda()
         xyz2 = xyz2.cuda()
         points1 = points1.cuda()
@@ -481,47 +485,8 @@ class PointSIFT(nn.Module):
 
 
 if __name__ == "__main__":
-    model = PointSIFT(2).cuda()
-    PC  =  DFileParser.OpenOBJFile("Strawberry.obj")+6.0
-    PC2 =  DFileParser.OpenOBJFile("secondobject.obj")
-    annotation1 = np.zeros(PC.shape[0])
-    annotation2 = np.ones (PC2.shape[0])
-    PC  = np.concatenate((PC,PC2),axis=0)
-    PC = torch.from_numpy(PC.astype(np.float32)).unsqueeze(0).cuda()
-    Annotation = torch.from_numpy(np.concatenate((annotation1,annotation2),axis=0)).unsqueeze(0).cuda()
-    print(PC.shape,Annotation.shape)
-    optimizer = optim.SGD([{'params' : model.parameters(),'lr' : 0.01}])
-    criterion = nn.CrossEntropyLoss(weight=torch.Tensor([1.0,1.0]).cuda())
-
-    colors = []
-    for c in Annotation[0]:
-        if(c == 0):
-            colors.append([1.0,0.0,0.0])
-        else:
-            colors.append([0.0,1.0,0.0])
-    colors = np.array(colors)
-    pcd = open3d.PointCloud()
-    pcd.points = open3d.Vector3dVector(PC.cpu().numpy()[0])
-    pcd.colors = open3d.Vector3dVector(np.array(colors))
-    open3d.draw_geometries([pcd])
-
-    for i in range(0,300):
-        optimizer.zero_grad
-        out = model(PC)
-        loss = criterion(out,Annotation.long())
-        print("Loss : ", loss)
-        loss.backward()
-        optimizer.step()
-
-    colors = []
-    out = out.permute(0,2,1)
-    for c in out[0]:
-        if(torch.max(c.unsqueeze(0),dim=1)[1] ==0):
-            colors.append([0.0,1.0,0.0])
-        else:
-            colors.append([1.0,0.0,0.0])
-    colors = np.array(colors)
-    pcd = open3d.PointCloud()
-    pcd.points = open3d.Vector3dVector(PC.cpu().numpy()[0])
-    pcd.colors = open3d.Vector3dVector(np.array(colors))
-    open3d.draw_geometries([pcd])
+    for i in range(10):
+        xyz = torch.rand(16, 2048,3).cuda()
+        net = PointSIFT(1)
+        net.cuda()
+        x = net(xyz)

@@ -1,9 +1,0 @@
-/home/lelouedec/anaconda3/envs/torchv1/lib/python3.6/site-packages/point-0.0.0-py3.6-linux-x86_64.egg/point.py
-/home/lelouedec/anaconda3/envs/torchv1/lib/python3.6/site-packages/point-0.0.0-py3.6-linux-x86_64.egg/point.cpython-36m-x86_64-linux-gnu.so
-/home/lelouedec/anaconda3/envs/torchv1/lib/python3.6/site-packages/point-0.0.0-py3.6-linux-x86_64.egg/__pycache__/point.cpython-36.pyc
-/home/lelouedec/anaconda3/envs/torchv1/lib/python3.6/site-packages/point-0.0.0-py3.6-linux-x86_64.egg/EGG-INFO/dependency_links.txt
-/home/lelouedec/anaconda3/envs/torchv1/lib/python3.6/site-packages/point-0.0.0-py3.6-linux-x86_64.egg/EGG-INFO/SOURCES.txt
-/home/lelouedec/anaconda3/envs/torchv1/lib/python3.6/site-packages/point-0.0.0-py3.6-linux-x86_64.egg/EGG-INFO/PKG-INFO
-/home/lelouedec/anaconda3/envs/torchv1/lib/python3.6/site-packages/point-0.0.0-py3.6-linux-x86_64.egg/EGG-INFO/native_libs.txt
-/home/lelouedec/anaconda3/envs/torchv1/lib/python3.6/site-packages/point-0.0.0-py3.6-linux-x86_64.egg/EGG-INFO/not-zip-safe
-/home/lelouedec/anaconda3/envs/torchv1/lib/python3.6/site-packages/point-0.0.0-py3.6-linux-x86_64.egg/EGG-INFO/top_level.txt

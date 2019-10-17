@@ -1,18 +1,15 @@
+import open3d
 import torch
 from torch.autograd import Variable
 import numpy as np
 import torch.nn as nn
 import torch.optim as optim
 from torch.utils import data
-from train_loader import PointCloudDataset
 from torch import cuda, FloatTensor, LongTensor
 from xConv import XConv,Dense
-import DFileParser
-import knn
 import sys
-import open3d
 
-from sklearn.neighbors import LSHForest, NearestNeighbors
+from sklearn.neighbors import  NearestNeighbors
 #import matplotlib.pyplot as plt
 params = {'batch_size': 5,
           'shuffle': False,
@@ -48,70 +45,3 @@ def knn_indices_func_cpu(rep_pts : FloatTensor,  # (N, pts, dim)
     region_idx = torch.from_numpy(np.stack(region_idx, axis = 0))
 
     return region_idx
-
-
-def display_prediction(pc,pred):
-    points = np.array(pc).reshape((np.array(pc).shape[0]*5,4000,3)).reshape((np.array(pred).shape[0]*5*4000,3))
-    annotations = np.array(pred).reshape((np.array(pred).shape[0]*5,4000,2)).reshape((np.array(pred).shape[0]*5*4000,2))
-    colors = []
-    for a in annotations:
-        if(a[0]>a[1]):
-            colors.append(np.array([1.0,0.0,0.0]))
-        else:
-            colors.append(np.array([0.0,1.0,0.0]))
-    pcd = open3d.PointCloud()
-    pcd.points = open3d.Vector3dVector(points)
-    pcd.colors = open3d.Vector3dVector(np.array(colors))
-    open3d.draw_geometries([pcd])
-
-
-def predict(model_path):
-    dataset = PointCloudDataset("./Data/riseholme/Annotated/test")
-    training_generator = data.DataLoader(dataset, **params)
-    model = torch.load(model_path)
-    pc   = []
-    pred = []
-    count = 0
-    for batch in training_generator:
-        input = Variable(batch[0]).float()
-        #print(input.shape)
-        labels = Variable(batch[1]).float()
-        #colors = Variable(batch[2].cuda())
-        output = model(input)
-        _, predicted = torch.max(output.data, 2)
-        pc.append(batch[0].data.numpy())
-        pred.append(output.data.numpy())
-        #print("labels"  + str(labels.shape))
-        if(count >= 60):
-            display_prediction(pc,pred)
-            pc = []
-            pred = []
-            count = 0
-
-        count = count + 1
-
-def predict_withmodel(model):
-    dataset = PointCloudDataset("./Data/riseholme/Annotated/test")
-    training_generator = data.DataLoader(dataset, **params)
-    pc   = []
-    pred = []
-    count = 0
-    model = model.cpu()
-    for batch in training_generator:
-        input = Variable(batch[0]).float()
-        #print(input.shape)
-        labels = Variable(batch[1]).float()
-        #colors = Variable(batch[2].cuda())
-        output = model(input)
-        _, predicted = torch.max(output.data, 2)
-        pc.append(batch[0].data.numpy())
-        pred.append(output.data.numpy())
-        #print("labels"  + str(labels.shape))
-        if(count >= 60):
-            display_prediction(pc,pred)
-            pc = []
-            pred = []
-            count = 0
-
-        count = count + 1
-    #model = model.cuda()

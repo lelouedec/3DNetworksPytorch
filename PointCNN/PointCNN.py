@@ -1,11 +1,10 @@
+from Utils import knn_indices_func_cpu
 import torch
 from torch.autograd import Variable
 import numpy as np
 import torch.nn as nn
 from torch import cuda, FloatTensor, LongTensor
 from xConv import XConv,Dense
-import DFileParser
-from Utils import knn_indices_func_cpu
 from collections import OrderedDict
 
 
@@ -207,7 +206,7 @@ class PointCnnLayer(nn.Module):
 
 if __name__ == "__main__":
     x = 8
-    PC =  DFileParser.OpenOBJFile("Strawberry.obj")
+    xyz = torch.rand(1, 30000,3).cuda()
     xconv_param_name = ('K', 'D', 'P', 'C')
     xconv_params = [dict(zip(xconv_param_name, xconv_param)) for xconv_param in
                 [(8, 1, -1, 256),
@@ -228,11 +227,7 @@ if __name__ == "__main__":
               (32 * x, 0.5),
               (2,0.5)]]
 
-    model = PointCnnLayer(PC,["features"],[ xconv_params,xdconv_params,fc_params ])
+    model = PointCnnLayer(xyz,["features"],[ xconv_params,xdconv_params,fc_params ]).cuda()
     #print(model)
-    out = model(Variable(torch.from_numpy(PC.astype(np.float32)).unsqueeze(0)))
-    displayed_shape = PC
-    # # print(displayed_shape.shape)
-    B = np.zeros((1,PC.shape[0],1))
-    colors = np.concatenate((B,out.data.numpy()),-1)
-    DFileParser.DisplayPointCloud(displayed_shape,colors.squeeze(0))
+    out = model(xyz)
+    print(out.shape)
