@@ -10,14 +10,14 @@ Most of the networks are using the cuda code in cppattempt. Please go in there a
 The only things required should be pytorch 1.0+ and the corresponding cudatoolkit, everything configured correctly obviously. See pytorch explanations for how to compile C++ extensions.
 
 # Table of Contents
-1. [PointSift](PointSift)
-2. [PointCNN] (PointCNN)
-3. [PointNet++](PointNet++)
-4. [Cuda Extension](Cuda Extension)
-5. [3D-BoNet](3D-BoNet)
-6. [SPGN](SPGN)
-7. [PCN](9PCN)
-8. [3D completion challenge](3D completion challenge)
+1. [PointSift](#PointSift)
+2. [PointCNN] (#PointCNN)
+3. [PointNet++](#PointNet++)
+4. [Cuda Extension](#Cuda Extension)
+5. [3D-BoNet](#3D-BoNet)
+6. [SPGN](#SPGN)
+7. [PCN](#PCN)
+8. [3D completion challenge](#3D completion challenge)
 
 
 
@@ -46,7 +46,7 @@ Quick implementation of 3D-BoNet (https://arxiv.org/pdf/1906.01140.pdf) https://
 Implementation of SGPN (https://arxiv.org/pdf/1711.08588.pdf) based on Pointnet implementation.
 
 
-### PCN
+## PCN
 Implementation of PCN (PCN: Point Completion Network) (https://arxiv.org/pdf/1808.00671.pdf) (https://github.com/wentaoyuan/pcn) using pytorch. For the chamfer distance and the EMD loss, I used inplementation from respectively https://github.com/chrdiller/pyTorchChamferDistance and https://github.com/daerduoCarey/PyTorchEMD. See these repositories for how to use them. Copy emd.py and the compiled ".so" lib to the same directory of your model and it should be fine. 
 Tested with the PCN paper shapenet data, download it from the google drive provided in their repository. The dataloader will help loading the pointclouds from the shapenet directory. See following screenshot for example: 
 ![Example for pcn](./PCN/example.png)
