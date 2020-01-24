@@ -9,14 +9,15 @@ This repository is meant as way to learn by implementating them, different 3D de
 Most of the networks are using the cuda code in cppattempt. Please go in there and install the extension (python setup.py install), so that they can import it.
 The only things required should be pytorch 1.0+ and the corresponding cudatoolkit, everything configured correctly obviously. See pytorch explanations for how to compile C++ extensions.
 
-1.[PointSift] PointSift
-2.[PointCNN] PointCNN
-3.[PointNet++] PointNet++
-4.[Cuda Extension] Cuda Extension
-5.[3D-BoNet] 3D-BoNet
-6.[SPGN] SPGN
-7.[PCN] PCN
-8.[3D completion challenge] 3D completion challenge
+# Table of Contents
+1. [PointSift](PointSift)
+2. [PointCNN] (PointCNN)
+3. [PointNet++](PointNet++)
+4. [Cuda Extension](Cuda Extension)
+5. [3D-BoNet](3D-BoNet)
+6. [SPGN](SPGN)
+7. [PCN](9PCN)
+8. [3D completion challenge](3D completion challenge)
 
 
 
