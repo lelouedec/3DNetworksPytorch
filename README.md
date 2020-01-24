@@ -13,11 +13,11 @@ The only things required should be pytorch 1.0+ and the corresponding cudatoolki
 1. [PointSift](#PointSift)
 2. [PointCNN](#PointCNN)
 3. [PointNet++](#PointNet++)
-4. [Cuda Extension](#Cuda Extension)
+4. [Cuda_Extension](#Cuda_Extension)
 5. [3D-BoNet](#3D-BoNet)
 6. [SPGN](#SPGN)
 7. [PCN](#PCN)
-8. [3D completion challenge](#3D completion challenge)
+8. [3D_completion_challenge](#3D_completion_challenge)
 
 
 
@@ -34,7 +34,7 @@ An implementation of PointNet++ using Pytorch (https://arxiv.org/pdf/1706.02413.
 It uses the same algorithms on GPU as PointSift as Pointsift uses Pointnet++ modules.
 
 
-## Cuda Extension
+## Cuda_Extension
 There are two versions of the cuda extensions for pointnet and pointsift. The first one is in C_utils and was implemented using the old C api for torch. As it is now deprecated in newer version of pytorch and they recommend using the C++ extension api, I did an attempt in cppattempt folder.
 
 ## 3D-BoNet
@@ -52,5 +52,5 @@ Tested with the PCN paper shapenet data, download it from the google drive provi
 ![Example for pcn](./PCN/example.png)
 
 
-## 3D completion challenge
+## 3D_completion_challenge
 A new 3D completion challenge is available here : https://github.com/lynetcha/completion3d it includes PCN (seen above)
