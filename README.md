@@ -11,7 +11,7 @@ The only things required should be pytorch 1.0+ and the corresponding cudatoolki
 
 # Table of Contents
 1. [PointSift](#PointSift)
-2. [PointCNN] (#PointCNN)
+2. [PointCNN](#PointCNN)
 3. [PointNet++](#PointNet++)
 4. [Cuda Extension](#Cuda Extension)
 5. [3D-BoNet](#3D-BoNet)
