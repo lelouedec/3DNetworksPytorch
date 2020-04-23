@@ -6,8 +6,6 @@ import sys
 import time
 import point
 
-
-
 x = torch.FloatTensor(1,200, 3).cuda()
 ya = torch.zeros((1,200, 8), dtype=torch.int32).cuda()
 radius = 1.0

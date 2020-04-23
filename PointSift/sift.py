@@ -345,13 +345,22 @@ class Pointnet_fp_module(nn.Module):
         m = xyz2.shape[1]
         dist = torch.zeros((xyz1.shape[0],xyz1.shape[1], 3)).cpu()
         idx = torch.zeros((xyz1.shape[0],xyz1.shape[1], 3), dtype=torch.int32).cpu()
-        point.interpolate(b,n, m, xyz1.cpu(), xyz2.cpu(), dist,idx);
+        point.interpolate(b,n, m, xyz1.cpu(), xyz2.cpu(), dist,idx)
+       
+        
         dist     = self.tanh(dist)
-        norm     = torch.sum((1.0/dist),dim = 2, keepdim=True)
+        norm     = torch.sum((1.0/ (dist+1e-10 ) ),dim = 2, keepdim=True)
         norm     = norm.repeat([1,1,3])
-        weight   = (1.0/dist) / norm
+        weight   = (1.0/dist) / (norm+1e-10)
+
         interpolated_points = torch.zeros((b,n, points1.shape[2])).cpu()
-        point.three_interpolate(b, m, c, n, points2.cpu(), idx.cpu(), weight.cpu(), interpolated_points)
+        # print(torch.sum(points2 != points2))
+        # print(torch.sum(idx != idx))
+        # print(torch.sum(weight != weight))
+        # print(torch.sum(interpolated_points != interpolated_points))
+        # exit()
+
+        interpolated_points = point.three_interpolate(b, m, c, n,points1.shape[2], points2.cpu(), idx.cpu(), weight.cpu(), interpolated_points)
         xyz1 = xyz1.cuda()
         xyz2 = xyz2.cuda()
         points1 = points1.cuda()
@@ -426,37 +435,61 @@ class PointSIFT(nn.Module):
         l3_xyz, l3_points = self.pointsift_res_m3(xyz, points)
         # print(l3_xyz.shape, l3_points.shape)
         c3_xyz, c3_points = self.pointnet_sa_m3(l3_xyz, l3_points)
+       
 
         l4_xyz, l4_points = self.pointsift_res_m4(c3_xyz, c3_points)
         c4_xyz, c4_points = self.pointnet_sa_m4(l4_xyz, l4_points)
+       
 
         l5_xyz, l5_points = self.pointsift_res_m5_1(c4_xyz, c4_points)
         l5_2_xyz, l5_2_points = self.pointsift_res_m5_2(l5_xyz, l5_points)
+        
 
         l2_cat_points = torch.cat([l5_points, l5_2_points], dim=2)
+       
         fc_l2_points = self.conv1(l2_cat_points.permute(0,2,1)).permute(0,2,1)
+        
+        
         l3b_xyz, l3b_points = self.pointnet_sa_m6(l5_2_xyz,fc_l2_points)
+        
         l2_points = self.pointnet_fp_m0(c4_xyz,l3b_xyz, c4_points,l3_points ).permute(0,2,1)
+        # print(torch.sum(l2_points != l2_points))
+        # exit()
+
         _, l2_points_1 = self.pointsift_m0(c4_xyz,l2_points)
         _, l2_points_2 = self.pointsift_m1(c4_xyz,l2_points)
         _, l2_points_3 = self.pointsift_m2(c4_xyz,l2_points)
 
+       
+
         l2_points = torch.cat([l2_points_1,l2_points_2,l2_points_3],dim=-1)
         l2_points = self.conv2(l2_points)
+        
+       
+        
+
         l1_points = self.pointnet_fp_m1(c3_xyz,c4_xyz, c3_points,l2_points ).permute(0,2,1)
+        print(torch.sum(l1_points != l1_points))
+
         _, l1_points_1 = self.pointsift_m3(c3_xyz,l1_points)
         _, l1_points_2 = self.pointsift_m4(c3_xyz,l1_points)
+        
 
         l1_points = torch.cat([l1_points_1,l1_points_2], dim =-1)
+       
+
         l0_points = self.conv3(l1_points)
+        
+
         l0_points = self.pointnet_fp_m2(l3_xyz,c3_xyz, l3_points,l0_points ).permute(0,2,1)
+       
         _, l0_points_1 = self.pointsift_m5(l3_xyz,l0_points)
+       
 
         net = self.conv_fc(l0_points_1)
         net = self.drop_fc(net)
         net = self.conv2_fc(net)
-
-        print(net.shape)
+        print(torch.sum(net != net))
         return net
 
 
@@ -485,8 +518,9 @@ class PointSIFT(nn.Module):
 
 
 if __name__ == "__main__":
-    for i in range(10):
+    for i in range(100):
         xyz = torch.rand(16, 2048,3).cuda()
         net = PointSIFT(1)
         net.cuda()
         x = net(xyz)
+        print(torch.sum(x != x))

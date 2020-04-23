@@ -73,7 +73,7 @@ void interpolate(int b, int n, int m,  at::Tensor  xyz1p, at::Tensor  xyz2p, at:
  }
 }
 
-void three_interpolate(int b, int m, int c, int n, at::Tensor points, at::Tensor idx, at::Tensor weight, at::Tensor out){
+at::Tensor three_interpolate(int b, int m, int c, int n,int d, at::Tensor points, at::Tensor idx, at::Tensor weight, at::Tensor out){
 
   float * pointsp = points.contiguous().data<float>();
   float * weightp = weight.contiguous().data<float>();
@@ -90,7 +90,7 @@ void three_interpolate(int b, int m, int c, int n, at::Tensor points, at::Tensor
          i2=idxp[j*3+1];
          i3=idxp[j*3+2];
          for (int l=0;l<c;++l) {
-             out.contiguous().data<float>()[j*c+l] = pointsp[i1*c+l]*w1 + pointsp[i2*c+l]*w2 + pointsp[i3*c+l]*w3;
+            outp[j*c+l] = pointsp[i1*c+l]*w1 + pointsp[i2*c+l]*w2 + pointsp[i3*c+l]*w3;
           }
      }
      pointsp+=m*c;
@@ -98,4 +98,5 @@ void three_interpolate(int b, int m, int c, int n, at::Tensor points, at::Tensor
      weightp+=n*3;
      outp+=n*c;
  }
+ return torch::from_blob(outp, {b, n,d});
 }

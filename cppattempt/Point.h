@@ -12,7 +12,7 @@ void group_points(int b, int n, int c , int m , int nsamples, at::Tensor xyz, at
 void ball_query (int b, int n, int m, float radius, int nsample, at::Tensor xyz1, at::Tensor xyz2, at::Tensor  idx, at::Tensor   pts_cnt);
 void farthestPoint(int b,int n,int m, at::Tensor  inp, at::Tensor  temp,at::Tensor  out);
 void interpolate(int b, int n, int m,  at::Tensor  xyz1p, at::Tensor  xyz2p, at::Tensor  distp,   at::Tensor  idxp);
-void three_interpolate(int b, int m, int c, int n, at::Tensor points, at::Tensor idx, at::Tensor weight, at::Tensor out);
+at::Tensor three_interpolate(int b, int m, int c, int n,int d, at::Tensor points, at::Tensor idx, at::Tensor weight, at::Tensor out);
 
 
 
