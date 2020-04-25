@@ -1,6 +1,10 @@
+
+
+[![DOI](https://zenodo.org/badge/160660348.svg)](https://zenodo.org/badge/latestdoi/160660348)
+
 # 3DNetworksPytorch
 
-
+*** This repository is mostly implementation of papers using the pytorch framework, PLEASE cite the corresponding papers before referencing to this work. User discretion is advised concerning accuracy and readiness of my implementations, please create issues when you encounter problems and I will try my best to fix them***
 
 
 This repository is meant as way to learn by implementating them, different 3D deep learning architectures for pointclouds. I haven't tested them on benchmark datasets for the papers, only on some toy examples. If You spot any mistake, I am open to pull requests and any colaboration on the topic.
@@ -54,3 +58,18 @@ Tested with the PCN paper shapenet data, download it from the google drive provi
 
 ## 3D_completion_challenge
 A new 3D completion challenge is available here : https://github.com/lynetcha/completion3d it includes PCN (seen above)
+
+
+
+
+As required:
+@misc{lelouedec2020,
+    author       = {Justin Le Louedec},
+    title        = {3D Networks, pytorch implementation},
+    month        = April,
+    year         = 2020,
+    doi          = {10.5281/zenodo.3766070 },
+    version      = {0.1},
+    publisher    = {Zenodo},
+    url          = {https://doi.org/10.5281/zenodo.3766070 
+    }
