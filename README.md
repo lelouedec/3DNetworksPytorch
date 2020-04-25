@@ -1,7 +1,5 @@
 
 
-[![DOI](https://zenodo.org/badge/160660348.svg)](https://zenodo.org/badge/latestdoi/160660348)
-
 # 3DNetworksPytorch
 
 ***This repository is mostly implementation of papers using the pytorch framework, PLEASE cite the corresponding papers before referencing to this work. User discretion is advised concerning accuracy and readiness of my implementations, please create issues when you encounter problems and I will try my best to fix them.***
@@ -69,9 +67,6 @@ As asked:
   title        = {lelouedec/3DNetworksPytorch: pre-alpha},
   month        = apr,
   year         = 2020,
-  publisher    = {Zenodo},
   version      = {0.1},
-  doi          = {10.5281/zenodo.3766070},
-  url          = {https://doi.org/10.5281/zenodo.3766070}
 }
  ```
