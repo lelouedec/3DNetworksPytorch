@@ -62,7 +62,8 @@ A new 3D completion challenge is available here : https://github.com/lynetcha/co
 
 
 
-As required:
+As asked:
+```
 @misc{lelouedec2020,
     author       = {Justin Le Louedec},
     title        = {3D Networks, pytorch implementation},
@@ -73,3 +74,4 @@ As required:
     publisher    = {Zenodo},
     url          = {https://doi.org/10.5281/zenodo.3766070 
     }
+ ```
