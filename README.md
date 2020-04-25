@@ -4,7 +4,7 @@
 
 # 3DNetworksPytorch
 
-***This repository is mostly implementation of papers using the pytorch framework, PLEASE cite the corresponding papers before referencing to this work. User discretion is advised concerning accuracy and readiness of my implementations, please create issues when you encounter problems and I will try my best to fix them***
+***This repository is mostly implementation of papers using the pytorch framework, PLEASE cite the corresponding papers before referencing to this work. User discretion is advised concerning accuracy and readiness of my implementations, please create issues when you encounter problems and I will try my best to fix them.***
 
 
 This repository is meant as way to learn by implementating them, different 3D deep learning architectures for pointclouds. I haven't tested them on benchmark datasets for the papers, only on some toy examples. If You spot any mistake, I am open to pull requests and any colaboration on the topic.
@@ -64,14 +64,14 @@ A new 3D completion challenge is available here : https://github.com/lynetcha/co
 
 As asked:
 ```
-@misc{lelouedec2020,
-    author       = {Justin Le Louedec},
-    title        = {3D Networks, pytorch implementation},
-    month        = April,
-    year         = 2020,
-    doi          = {10.5281/zenodo.3766070 },
-    version      = {0.1},
-    publisher    = {Zenodo},
-    url          = {https://doi.org/10.5281/zenodo.3766070 
-    }
+@software{lelouedec_2020_3766070,
+  author       = {lelouedec},
+  title        = {lelouedec/3DNetworksPytorch: pre-alpha},
+  month        = apr,
+  year         = 2020,
+  publisher    = {Zenodo},
+  version      = {0.1},
+  doi          = {10.5281/zenodo.3766070},
+  url          = {https://doi.org/10.5281/zenodo.3766070}
+}
  ```
