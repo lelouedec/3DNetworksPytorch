@@ -2,6 +2,10 @@
 
 # 3DNetworksPytorch
 
+
+
+***Looking for new papers to implement in pytorch ! Go comment in the dedicated issue link to papers you would like to see implemented using pytorch !!***
+
 ***This repository is mostly implementation of papers using the pytorch framework, PLEASE cite the corresponding papers before referencing to this work. User discretion is advised concerning accuracy and readiness of my implementations, please create issues when you encounter problems and I will try my best to fix them.***
 
 
