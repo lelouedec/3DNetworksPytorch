@@ -25,6 +25,7 @@ The only things required should be pytorch 1.0+ and the corresponding cudatoolki
 6. [SPGN](#SPGN)
 7. [PCN](#PCN)
 8. [3D_completion_challenge](#3D_completion_challenge)
+9. [FastFCN](#FastFCN)
 
 
 
@@ -62,7 +63,8 @@ Tested with the PCN paper shapenet data, download it from the google drive provi
 ## 3D_completion_challenge
 A new 3D completion challenge is available here : https://github.com/lynetcha/completion3d it includes PCN (seen above)
 
-
+## FastFCN
+Two files implementation of the fast fcn paper based on their own implementation. Go check the paper and git for more details : https://arxiv.org/pdf/1903.11816.pdf https://github.com/wuhuikai/FastFCN
 
 
 As asked:
