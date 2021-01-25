@@ -5,10 +5,10 @@ import torch.optim as optim
 import torch
 import numpy as np
 from torch.utils.tensorboard import SummaryWriter
+imprt tqdm
 
-
-# model = models.PCNEMD().cuda()
-model = torch.load("./models/model_10000.ckpt").cuda()
+model = models.PCNEMD().cuda()
+# model = torch.load("./models/model_10000.ckpt").cuda()
 alpha = [ 0.01,0.1,0.5,1.0]
 lr = 1e-6
 optimizer = optim.Adam([{'params': model.parameters(), 'lr': lr}])
@@ -17,7 +17,7 @@ my_dataset_loader = torch.utils.data.DataLoader(dataset=dataset,batch_size=1,shu
 epochs = 70000
 writer = SummaryWriter()
 a = 1
-for p in range(10001,epochs):
+for p in tqdm.tqdm(range(0,epochs)):
     lost = []
     for input_tensor,gt_tensor in my_dataset_loader:
         optimizer.zero_grad
