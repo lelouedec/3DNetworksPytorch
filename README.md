@@ -26,6 +26,7 @@ The only things required should be pytorch 1.0+ and the corresponding cudatoolki
 7. [PCN](#PCN)
 8. [3D_completion_challenge](#3D_completion_challenge)
 9. [FastFCN](#FastFCN)
+10.[CSRNet](#CSRNet)
 
 
 
@@ -65,6 +66,10 @@ A new 3D completion challenge is available here : https://github.com/lynetcha/co
 
 ## FastFCN
 Two files implementation of the fast fcn paper based on their own implementation. Go check the paper and git for more details : https://arxiv.org/pdf/1903.11816.pdf https://github.com/wuhuikai/FastFCN
+
+
+## CSRNet
+Implementation of the model used in the paper : https://arxiv.org/pdf/1802.10062.pdf. It is only one of the variation but the one used and advertised by the author. The output as in the paper needs to be upsampled to compare to the original image.
 
 
 As asked:
